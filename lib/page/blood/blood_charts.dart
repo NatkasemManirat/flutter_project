@@ -45,12 +45,17 @@ class _BloodChartState extends State<BloodChart> {
 
       var response = await apiprovider.getbloodsAVG(user_id!, year!);
       if (response.statusCode == 200) {
-        print(response.body);
-        // jsonResponse = jsonDecode(response.body);
+        if (response.body != null || response.body.isNotEmpty) {
+          print(response.body);
+          // jsonResponse = jsonDecode(response.body);
 
-        List<BarChartModel> jsonResponse = barChartModelFromJson(response.body);
-        data = jsonResponse;
-        loading = false;
+          List<BarChartModel> jsonResponse =
+              barChartModelFromJson(response.body);
+          data = jsonResponse;
+          loading = false;
+        } else {
+          throw Exception('Response body is empty.');
+        }
       }
     } on Exception catch (e) {
       // TODO
